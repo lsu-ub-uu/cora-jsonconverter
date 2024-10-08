@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -20,21 +20,49 @@
 package se.uu.ub.cora.jsonconverter.converter;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
+import java.util.Optional;
 
 import org.testng.annotations.Test;
 
 public class AuthTokenTest {
 	@Test
-	public void test() {
-		String id = "someId";
+	public void authTokenWithOutFirstAndLastName() {
+		String token = "someToken";
 		int validForNoSeconds = 600;
 		String idInUserStorage = "141414";
 		String loginId = "loginId";
-		AuthToken authToken = AuthToken.withTokenAndValidForNoSecondsAndIdInUserStorageAndLoginId(id,
-				validForNoSeconds, idInUserStorage, loginId);
-		assertEquals(authToken.token, "someId");
-		assertEquals(authToken.validForNoSeconds, 600);
-		assertEquals(authToken.idInUserStorage, "141414");
-		assertEquals(authToken.loginId, "loginId");
+
+		AuthToken authToken = new AuthToken(token, validForNoSeconds, idInUserStorage, loginId,
+				Optional.empty(), Optional.empty());
+
+		assertEquals(authToken.token(), token);
+		assertEquals(authToken.validForNoSeconds(), validForNoSeconds);
+		assertEquals(authToken.idInUserStorage(), idInUserStorage);
+		assertEquals(authToken.loginId(), loginId);
+		assertTrue(authToken.firstname().isEmpty());
+		assertTrue(authToken.firstname().isEmpty());
+		assertTrue(authToken.lastname().isEmpty());
+	}
+
+	@Test
+	public void authTokenWithFirstAndLastName() {
+		String token = "someToken";
+		int validForNoSeconds = 600;
+		String idInUserStorage = "141414";
+		String loginId = "loginId";
+		String firstname = "someFirstName";
+		String lastname = "someLastName";
+
+		AuthToken authToken = new AuthToken(token, validForNoSeconds, idInUserStorage, loginId,
+				Optional.of(firstname), Optional.of(lastname));
+
+		assertEquals(authToken.token(), token);
+		assertEquals(authToken.validForNoSeconds(), validForNoSeconds);
+		assertEquals(authToken.idInUserStorage(), idInUserStorage);
+		assertEquals(authToken.loginId(), loginId);
+		assertEquals(authToken.firstname().get(), firstname);
+		assertEquals(authToken.lastname().get(), lastname);
 	}
 }

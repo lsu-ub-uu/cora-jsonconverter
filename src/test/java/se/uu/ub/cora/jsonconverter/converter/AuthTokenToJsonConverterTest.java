@@ -1,5 +1,5 @@
 /*
- * Copyright 2016, 2017 Uppsala University Library
+ * Copyright 2024 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -21,25 +21,27 @@ package se.uu.ub.cora.jsonconverter.converter;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.Optional;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class AuthTokenToJsonConverterTest {
 	private String url;
-	private AuthToken authToken;
 
 	@BeforeMethod
 	public void beforeMethod() {
 		url = "http://epc.ub.uu.se/login/rest/authToken";
-		authToken = AuthToken.withTokenAndValidForNoSecondsAndIdInUserStorageAndLoginId("someToken",
-				599, "someIdInUserStorage", "someLoginId");
-
 	}
 
 	@Test
 	public void testAuthTokenToJsonConverter() {
+		AuthToken authToken = new AuthToken("someToken", 599, "someIdInUserStorage", "someLoginId",
+				Optional.empty(), Optional.empty());
 		AuthTokenToJsonConverter converter = new AuthTokenToJsonConverter(authToken, url);
+
 		String json = converter.convertAuthTokenToJson();
+
 		String expected = """
 				{
 				  "data": {
@@ -82,10 +84,13 @@ public class AuthTokenToJsonConverterTest {
 
 	@Test
 	public void testAuthTokenToJsonConverterWithName() {
-		authToken.firstName = "someFirstName";
-		authToken.lastName = "someLastName";
+
+		AuthToken authToken = new AuthToken("someToken", 599, "someIdInUserStorage", "someLoginId",
+				Optional.of("someFirstName"), Optional.of("someLastName"));
 		AuthTokenToJsonConverter converter = new AuthTokenToJsonConverter(authToken, url);
+
 		String json = converter.convertAuthTokenToJson();
+
 		String expected = """
 								{
 				  "data": {

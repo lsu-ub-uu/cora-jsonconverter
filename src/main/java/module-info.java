@@ -1,24 +1,21 @@
-/**
- * This module provides an implementation for the converter interface converting between XML and
- * {@link DataElement}.
- * 
- * This implementation maps XML and DataElement as it is described below: For each DataGroup a XML
- * tag is created where the tag name is the DataGroups nameInData. The DataGroups attributes are
- * added as XML attributes, to the DataGroups XML tag. If the DataGroup has a repeatId it is also
- * added as an attribute with the name repeatId to the groups XML tag.
- * 
- * Note that this implies that there can not exist an attribute with the name in data repeatId for
- * any DataElement.
- * 
- * Each DataGroup can have several children which can be either DataGroup or DataAtomic. The
- * DataAtomic is mapped to a XML with the tag name using nameIndata, and its value using the
- * DataAtomics value. As DataAtomics can not have attributes is only one attribut added to a
- * DataAtomics XML tag, the repeatId.
- * 
- * This module converts both to and from XML.
- * 
- * @provides ConverterFactory the ConverterFactory interface which is implemented in this module.
+/*
+ * Copyright 2024 Uppsala University Library
+ *
+ * This file is part of Cora.
+ *
+ * Cora is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * Cora is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with Cora. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 module se.uu.ub.cora.jsonconverter {
 	requires se.uu.ub.cora.json;
+
+	exports se.uu.ub.cora.jsonconverter.converter;
 }
